@@ -1,0 +1,57 @@
+server:
+  port: 8080
+  tomcat:
+    accesslog:
+      enabled: true
+      directory: logs
+      prefix: access_log
+      suffix: .log
+      file-date-format: .yyyy-MM-dd
+      pattern: '%h %l %u %t [%{X-TraceId}i] "%r" %s %b %D ms'
+      rotate: true
+    basedir: .
+    # 编码
+    uri-encoding: UTF-8
+
+spring:
+  application:
+    name: deploy-platform
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:33060/deploy_platform?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&useSSL=true&allowMultiQueries=true&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+jwt:
+  secret: jwtsecret
+  expiration: 86400000  # 24小时，以毫秒为单位
+  issuer: deploy-platform
+
+minio:
+  endpoint: http://localhost:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucketName: deploy-versions
+
+cors:
+  allowedOrigins: http://localhost:3000,http://127.0.0.1:3000
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.devops.entity
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+logging:
+  config: classpath:logback-spring.xml
