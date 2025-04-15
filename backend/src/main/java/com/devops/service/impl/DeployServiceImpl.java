@@ -15,6 +15,7 @@ import com.devops.vo.DeployRecordVO;
 import com.jcraft.jsch.Session;
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
+import io.minio.RemoveObjectArgs;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -127,14 +128,14 @@ public class DeployServiceImpl implements DeployService {
         deployRecordMapper.insert(record);
 
         try {
-            // 从MinIO下载文件
-            InputStream fileStream = minioClient
-                    .getObject(GetObjectArgs.builder().bucket(bucketName).object(version.getFilePath()).build());
             // 遍历服务器执行部署
             for (ServerInfo server : serversList) {
                 Session session = null;
                 Long serverId = server.getId();
                 try {
+                    // 从MinIO下载文件
+                    InputStream fileStream = minioClient
+                            .getObject(GetObjectArgs.builder().bucket(bucketName).object(version.getFilePath()).build());
                     logStatus(record.getId(), serverId,
                             String.format("开始部署到服务器：%s(%s)", server.getServerName(), server.getServerIp()));
                     session = SshUtil.connectToServer(server);
@@ -157,6 +158,8 @@ public class DeployServiceImpl implements DeployService {
                         }
                     }
                     logStatus(record.getId(), serverId, "部署完成");
+                    // 删除MinIO文件
+                    minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucketName).object(version.getFilePath()).build());
                 } catch (Exception e) {
                     logStatus(record.getId(), serverId, "部署失败：" + e.getMessage());
                     throw e;
