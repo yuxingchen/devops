@@ -158,8 +158,6 @@ public class DeployServiceImpl implements DeployService {
                         }
                     }
                     logStatus(record.getId(), serverId, "部署完成");
-                    // 删除MinIO文件
-                    minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucketName).object(version.getFilePath()).build());
                 } catch (Exception e) {
                     logStatus(record.getId(), serverId, "部署失败：" + e.getMessage());
                     throw e;
