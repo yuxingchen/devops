@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS server_info
     username     VARCHAR(50)  NOT NULL COMMENT '登录用户名',
     password     VARCHAR(200) COMMENT '登录密码',
     private_key  TEXT COMMENT '私钥内容',
-    deploy_path  VARCHAR(200) NOT NULL COMMENT '部署路径',
+    user_path  VARCHAR(200) NOT NULL COMMENT '用户路径',
     created_by   BIGINT       NOT NULL COMMENT '创建人ID',
     created_time DATETIME     DEFAULT NULL COMMENT '创建时间',
     updated_by   BIGINT       DEFAULT NULL COMMENT '更新人ID',
