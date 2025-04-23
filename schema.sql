@@ -99,6 +99,7 @@ CREATE TABLE IF NOT EXISTS server_info
 CREATE TABLE IF NOT EXISTS app_version
 (
     id           BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+    app_id       bigint(20)   NOT NULL COMMENT '应用ID',
     version_name VARCHAR(50)  NOT NULL COMMENT '版本名称',
     version_code VARCHAR(50)  NOT NULL COMMENT '版本号',
     file_name    VARCHAR(200) NOT NULL COMMENT '文件名称',
@@ -112,7 +113,7 @@ CREATE TABLE IF NOT EXISTS app_version
     updated_time DATETIME     DEFAULT NULL COMMENT '更新时间',
     deleted      TINYINT      NOT NULL DEFAULT 0 COMMENT '是否删除：0-未删除，1-已删除',
     PRIMARY KEY (id),
-    UNIQUE KEY uk_version_code (version_code)
+    UNIQUE KEY uk_version_code (app_id, version_code)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='应用版本表';
 
