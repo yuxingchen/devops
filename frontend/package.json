@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "build:zip": "vite build && node scripts/zip.js",
+    "dev": "vite --mode dev",
+    "build": "vite build --mode prod",
+    "build:zip": "vite build --mode prod && node scripts/zip.js",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },

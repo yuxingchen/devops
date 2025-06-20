@@ -12,10 +12,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 /**
  * 应用服务实现类
@@ -41,9 +41,9 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
             throw new BusinessException("应用不存在");
         }
         // 获取应用关联的服务器ID列表
-        List<String> serverList = new ArrayList<>();
+        Set<String> serverList = new HashSet<>();
         if (StringUtils.isNotEmpty(application.getServerIds())) {
-            serverList = Arrays.asList(application.getServerIds().split(","));
+            serverList.addAll(Arrays.asList(application.getServerIds().split(",")));
         }
         // 获取应用关联的集群服务器
         if (StringUtils.isNotBlank(application.getServerClusterIds())) {
@@ -57,7 +57,8 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
                 if (CollectionUtils.isEmpty(serverIds)) {
                     continue;
                 }
-                serverList.addAll(serverIds.stream().map(String::valueOf).collect(Collectors.toList()));
+                //  添加集群服务器ID
+                serverIds.forEach(serverId -> serverList.add(serverId.toString()));
             }
         }
         // 设置关联服务器数组

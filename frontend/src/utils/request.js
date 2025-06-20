@@ -1,10 +1,11 @@
 import axios from 'axios'
 import {ElMessage} from 'element-plus'
 import {getToken} from '@/utils/auth'
+import {getApiBaseUrl} from '@/utils/env'
 
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: '/',
+  baseURL: getApiBaseUrl(),
   timeout: 50000
 })
 
@@ -13,7 +14,7 @@ service.interceptors.request.use(
   config => {
     const token = getToken()
     if (token) {
-      config.headers['Authorization'] = 'Bearer ' + token
+      config.headers['Token-Authorization'] = 'Bearer ' + token
     }
     return config
   },

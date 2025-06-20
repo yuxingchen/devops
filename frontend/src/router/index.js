@@ -1,6 +1,7 @@
-import {createRouter, createWebHashHistory} from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 import Layout from '@/layout/index.vue'
 import {getToken} from '@/utils/auth'
+import {getApiBaseUrl} from '@/utils/env'
 
 export const routes = [
   {
@@ -105,7 +106,7 @@ export const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(getApiBaseUrl()),
   routes
 })
 
