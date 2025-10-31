@@ -6,7 +6,7 @@ import {getApiBaseUrl} from '@/utils/env'
 // 创建 axios 实例
 const service = axios.create({
   baseURL: getApiBaseUrl(),
-  timeout: 50000
+  timeout: 120000
 })
 
 // 请求拦截器
